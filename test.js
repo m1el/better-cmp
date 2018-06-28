@@ -125,7 +125,7 @@ var test = function(cmp) {
   expect([1], '<', [2]);
   expect([1], '<', [1, 2]);
   expect([1, 2], '=', [1, 2]);
-  expect([1, '1', 1], '<', [1, '1,2']);
+  expect([1, '1', 3], '<', [1, '1,2']);
   expect([1, 1, 1], '<', [1, 2, 1]);
 
   console.log('tests ran', tests);
