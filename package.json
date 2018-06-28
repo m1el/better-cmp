@@ -1,0 +1,24 @@
+{
+  "name": "better-cmp",
+  "version": "1.0.0",
+  "description": "Compare things. Adequately.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js --run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m1el/better-cmp.git"
+  },
+  "keywords": [
+    "compare",
+    "cmp",
+    "utility"
+  ],
+  "author": "Igor null <m1el.2027@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/m1el/better-cmp/issues"
+  },
+  "homepage": "https://github.com/m1el/better-cmp#README.md"
+}
