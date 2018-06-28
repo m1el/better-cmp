@@ -41,6 +41,10 @@ A stricter version of this function would throw on `NaN` and `null`, but these f
 
 Tests are located in `test.js`.
 
+### License
+
+MIT
+
 ### Author
 
 Igor null <m1el.2027@gmail.com>
