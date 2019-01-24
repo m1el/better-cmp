@@ -1,6 +1,5 @@
 // LICENSE = MIT
-import * as cmp from './index';
-import { Ord } from './types';
+import { cmp, Ord } from './index';
 
 export const sortBy = <T>(ary: Array<T>, fn: (x: T, index: number) => Ord) => {
     return ary

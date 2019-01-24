@@ -1,5 +1,5 @@
-import * as cmp from './index';
-import { CmpFn, Ord } from './types';
+import { cmp, CmpFn, Ord }  from './index';
+
 export const test = (cmp: CmpFn) => {
     let tests = 0;
     let failed = 0;

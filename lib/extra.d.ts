@@ -1,4 +1,4 @@
-import { Ord } from './types';
+import { Ord } from './index';
 export declare const sortBy: <T>(ary: T[], fn: (x: T, index: number) => Ord) => T[];
 export declare const lt: (a: Ord, b: Ord) => boolean;
 export declare const eq: (a: Ord, b: Ord) => boolean;

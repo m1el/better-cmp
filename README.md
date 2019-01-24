@@ -3,8 +3,9 @@
 ### Usage
 
 ```javascript
-var cmp = require('better-cmp');
-console.log(cmp([1, '2', null], [1, '1']));
+const { cmp } = require('better-cmp');
+console.assert(cmp([1, 'b', null], [1, 'a']) === -1);
+console.assert(cmp([1, {reverse: 'b'}, null], [1, {reverse: 'a'}]) === 1);
 ```
 
 ### Rationale
@@ -28,6 +29,8 @@ It is useful to have a stricter version of comparison.
 
 - Arrays are compared lexicographically, comparing the elements recursively.
 
+- If both values are objects that have a `reverse` key, are sorted in reverse order, using the value by that key.
+
 - Anything else throws `TypeError`.
 
 There are a few arbitrary decisions made here.
@@ -35,11 +38,17 @@ There are a few arbitrary decisions made here.
 The other consistent solution would be to throw on `NaN`.
 `null` is treated as `None` value, and the type of other variable is ignored.
 
-A stricter version of this function would throw on `NaN` and `null`, but these features are useful.
+### Breaking changes
+
+From version 1.1.0 to 2.0.0, export method was changed to make it more user-friendly for TypeScript.
+
+Until 1.1.0: `var cmp = require('better-cmp');`
+
+Since 2.0.0: `var cmp = require('better-cmp').cmp;` ...or `const { cmp } = require('better-cmp');`
 
 ### Tests
 
-Tests are located in `test.js`.
+Tests are located in `lib/test.ts`.
 
 ### License
 

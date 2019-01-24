@@ -1,4 +1,12 @@
-import {Ord, OrdArray, Ordering, OrdReverse} from './types';
+export type Ord = null | boolean | number | string | OrdArray | OrdReverse;
+export interface OrdArray extends Array<Ord> { }
+export interface OrdReverse {
+    reverse: Ord;
+}
+// const isReverse = (x: Ord): x is OrdReverse => x && hasOwnProperty.call(x, 'reverse');
+//
+export type Ordering = -1 | 0 | 1;
+export type CmpFn = (a: Ord, b: Ord) => Ordering;
 
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 const toString = Object.prototype.toString;
@@ -22,7 +30,7 @@ const isArray: (ary: any) => ary is Array<any> = Array.isArray ||
  *   cmp({reverse: 0}, {reverse: 1}) === 1
  *   cmp(null, 0) === -1
  */
-const cmp = (a: Ord, b: Ord): Ordering => {
+export const cmp = (a: Ord, b: Ord): Ordering => {
     const nulla = a === null;
     const nullb = b === null;
     if (nulla || nullb) {
@@ -53,7 +61,7 @@ const cmp = (a: Ord, b: Ord): Ordering => {
             // else {
             // passthrough
             // }
-        } else if (typea === 'string' || typea === 'boolean' /* || typea === 'bigint' */) {
+        } else if (typea === 'string' || typea === 'boolean' || (typea as string) === 'bigint') {
             // tslint:disable-next-line:no-empty
             // passthrough
         } else if (isArray(a) && isArray(b)) {
@@ -71,5 +79,3 @@ const cmp = (a: Ord, b: Ord): Ordering => {
 
     return (a > b) ? 1 : ((a < b) ? -1 : 0);
 };
-
-export = cmp;
