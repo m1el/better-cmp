@@ -53,7 +53,7 @@ const cmp = (a: Ord, b: Ord): Ordering => {
             // else {
             // passthrough
             // }
-        } else if (typea === 'string' || typea === 'boolean' /* || typea === 'bigint' */) {
+        } else if (typea === 'string' || typea === 'boolean' || (typea as string) === 'bigint') {
             // tslint:disable-next-line:no-empty
             // passthrough
         } else if (isArray(a) && isArray(b)) {
