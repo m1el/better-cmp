@@ -4,8 +4,8 @@
 
 ```javascript
 const { cmp } = require('better-cmp');
-console.assert(cmp([1, 'b', null], [1, 'a']) === -1);
-console.assert(cmp([1, {reverse: 'b'}, null], [1, {reverse: 'a'}]) === 1);
+console.assert(cmp([1, 'b', null], [1, 'a']) === 1);
+console.assert(cmp([1, {reverse: 'b'}, null], [1, {reverse: 'a'}]) === -1);
 ```
 
 ### Rationale
