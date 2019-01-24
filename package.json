@@ -1,10 +1,11 @@
 {
   "name": "better-cmp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Compare things. Adequately.",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
-    "test": "node test.js --run"
+    "build": "tsc",
+    "test": "tsc && node lib/test.js --run"
   },
   "repository": {
     "type": "git",
@@ -17,8 +18,17 @@
   ],
   "author": "Igor null <m1el.2027@gmail.com>",
   "license": "MIT",
+  "typings": "./lib/index",
+  "files": [
+    "./lib/",
+    "README.md",
+    "LICENSE"
+  ],
   "bugs": {
     "url": "https://github.com/m1el/better-cmp/issues"
   },
-  "homepage": "https://github.com/m1el/better-cmp#README.md"
+  "homepage": "https://github.com/m1el/better-cmp#README.md",
+  "devDependencies": {
+    "typescript": "^3.2.4"
+  }
 }

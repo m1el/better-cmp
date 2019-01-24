@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "declaration": true,
+        "lib": ["es6", "dom"],
+        "outDir": "lib"
+    },
+    "files": [
+        "./src/extra.ts",
+        "./src/index.ts",
+        "./src/test.ts"
+    ]
+}
