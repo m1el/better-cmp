@@ -1,6 +1,6 @@
 {
   "name": "better-cmp",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Compare things. Adequately.",
   "main": "./lib/index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   "license": "MIT",
   "typings": "./lib/index",
   "files": [
-    "./lib/",
+    "lib/**",
     "README.md",
     "LICENSE"
   ],
