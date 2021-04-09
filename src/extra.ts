@@ -14,7 +14,7 @@ export const sortByLazy = <T>(ary: Array<T>, ...fns: Array<OrdFn>) => {
     return ary.sort((a, b) => {
         let c = 0;
         for (let i = 0; i < fns.length; i++) {
-            const fn = fns[i]
+            const fn = fns[i];
             c = cmp(fn(a), fn(b));
             if (c !== 0) { break; }
         }
