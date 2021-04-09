@@ -1,8 +1,11 @@
 import { Ord } from './index';
-export declare const sortBy: <T>(ary: T[], fn: (x: T, index: number) => Ord) => T[];
+declare type OrdFn = <T>(x: T, index?: number) => Ord;
+export declare const sortBy: <T>(ary: T[], fn: OrdFn) => T[];
+export declare const sortByLazy: <T>(ary: T[], ...fns: OrdFn[]) => T[];
 export declare const lt: (a: Ord, b: Ord) => boolean;
 export declare const eq: (a: Ord, b: Ord) => boolean;
 export declare const gt: (a: Ord, b: Ord) => boolean;
 export declare const lte: (a: Ord, b: Ord) => boolean;
 export declare const neq: (a: Ord, b: Ord) => boolean;
 export declare const gte: (a: Ord, b: Ord) => boolean;
+export {};

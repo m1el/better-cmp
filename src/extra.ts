@@ -1,11 +1,25 @@
 // LICENSE = MIT
 import { cmp, Ord } from './index';
 
-export const sortBy = <T>(ary: Array<T>, fn: (x: T, index: number) => Ord) => {
+type OrdFn = <T>(x: T, index?: number) => Ord;
+
+export const sortBy = <T>(ary: Array<T>, fn: OrdFn) => {
     return ary
         .map((val, idx) => ({val, idx, key: fn(val, idx)}))
         .sort((a, b) => cmp(a.key, b.key) || cmp(a.idx, b.idx))
         .map((obj) => obj.val);
+};
+
+export const sortByLazy = <T>(ary: Array<T>, ...fns: Array<OrdFn>) => {
+    return ary.sort((a, b) => {
+        let c = 0;
+        for (let i = 0; i < fns.length; i++) {
+            const fn = fns[i]
+            c = cmp(fn(a), fn(b));
+            if (c !== 0) { break; }
+        }
+        return c;
+    });
 };
 
 export const lt = (a: Ord, b: Ord) => cmp(a, b) === -1;
