@@ -3,15 +3,21 @@ export interface OrdArray extends Array<Ord> { }
 export interface OrdReverse {
     reverse: Ord;
 }
-// const isReverse = (x: Ord): x is OrdReverse => x && hasOwnProperty.call(x, 'reverse');
-//
+
 export type Ordering = -1 | 0 | 1;
 export type CmpFn = (a: Ord, b: Ord) => Ordering;
 
-const hasOwnProperty = Object.prototype.hasOwnProperty;
-const toString = Object.prototype.toString;
-const isArray: (ary: any) => ary is Array<any> = Array.isArray ||
-    ((ary): ary is Array<any> => toString.call(ary) === '[object Array]');
+const has: <P extends PropertyKey>(object: {}, property: P) =>
+    object is { [K in P]: unknown } =
+    Function.prototype.call.bind(Object.prototype.hasOwnProperty);
+
+const toString: (object: unknown) => string =
+    Function.prototype.call.bind(Object.prototype.toString);
+
+const isArray: (ary: unknown) => ary is Array<unknown> = Array.isArray ||
+    ((ary): ary is Array<unknown> => toString(ary) === '[object Array]');
+
+const isReverse = (x: Ord): x is OrdReverse => x && has(x, 'reverse');
 
 /*
  * Compare two values.
@@ -31,6 +37,13 @@ const isArray: (ary: any) => ary is Array<any> = Array.isArray ||
  *   cmp(null, 0) === -1
  */
 export const cmp = (a: Ord, b: Ord): Ordering => {
+    // handle reverse sorting
+    if (isReverse(a) && isReverse(b)) {
+        const tmp = b.reverse;
+        b = a.reverse;
+        a = tmp;
+    }
+
     const nulla = a === null;
     const nullb = b === null;
     if (nulla || nullb) {
@@ -38,17 +51,10 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
         a = nullb;
         b = nulla;
     } else {
-        // handle reverse sorting
-        if (a && b && hasOwnProperty.call(a, 'reverse') && hasOwnProperty.call(b, 'reverse')) {
-            const tmp = (b as OrdReverse).reverse;
-            b = (a as OrdReverse).reverse;
-            a = tmp;
-        }
-
         const typea = typeof a;
         const typeb = typeof b;
         if (typea !== typeb) {
-            throw new TypeError('different types are not orderable: ' + typea + ' <> ' + typeb);
+            throw new TypeError(`different types are not orderable: ${typea} <> ${typeb}`);
         }
 
         if (typea === 'number') {
@@ -61,7 +67,7 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
             // else {
             // passthrough
             // }
-        } else if (typea === 'string' || typea === 'boolean' || (typea as string) === 'bigint') {
+        } else if (typea === 'string' || typea === 'boolean' || typea === 'bigint') {
             // tslint:disable-next-line:no-empty
             // passthrough
         } else if (isArray(a) && isArray(b)) {
@@ -79,3 +85,5 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
 
     return (a > b) ? 1 : ((a < b) ? -1 : 0);
 };
+
+export default cmp

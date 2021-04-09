@@ -139,6 +139,7 @@ export const test = (cmp: CmpFn) => {
     expect({reverse: 0}, '>', {reverse: 1});
     expect({reverse: [1]}, '=', {reverse: [1]});
     expect({reverse: [1, 1]}, '>', {reverse: [1, 2]});
+    expect({reverse: null}, '>', {reverse: 1});
 
     console.log('tests ran', tests);
     console.log('tests failed', failed);
