@@ -7,7 +7,7 @@ export interface OrdReverse {
 export type Ordering = -1 | 0 | 1;
 export type CmpFn = (a: Ord, b: Ord) => Ordering;
 
-const has: <P extends PropertyKey>(object: {}, property: P) =>
+const has: <P extends PropertyKey>(object: unknown, property: P) =>
     object is { [K in P]: unknown } =
     Function.prototype.call.bind(Object.prototype.hasOwnProperty);
 
@@ -86,4 +86,4 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
     return (a > b) ? 1 : ((a < b) ? -1 : 0);
 };
 
-export default cmp
+export default cmp;
