@@ -3,7 +3,8 @@
         "module": "commonjs",
         "declaration": true,
         "lib": ["es6", "dom"],
-        "outDir": "lib"
+        "outDir": "lib",
+        "newLine": "LF"
     },
     "files": [
         "./src/extra.ts",
