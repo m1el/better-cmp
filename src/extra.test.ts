@@ -95,10 +95,10 @@ test('lt, eq, gt, gte, neq, lte work as expected', () => {
 
 test('example from documentation works', () => {
     const dataset = [
-        {name: 'Foo', value: 3},
-        {name: 'Bar', value: 1},
-        {name: 'Baz', value: 2},
+        {group: 1, name: 'Foo', value: 3},
+        {group: 2, name: 'Bar', value: 1},
+        {group: 1, name: 'Baz', value: 2},
     ];
-    const sorted = sortBy(dataset, (item) => item.value);
-    expect(sorted.map((x) => x.name).join(',')).toBe('Bar,Baz,Foo');
+    const sorted = sortBy(dataset, (item) => [item.group, item.value]);
+    expect(sorted.map((item) => item.name).join(',')).toBe('Baz,Foo,Bar');
 });
