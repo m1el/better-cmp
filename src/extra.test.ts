@@ -92,3 +92,13 @@ test('lt, eq, gt, gte, neq, lte work as expected', () => {
         expect(fn(1, 0)).toBe(gtVal);
     }
 });
+
+test('example from documentation works', () => {
+    const dataset = [
+        {name: 'Foo', value: 3},
+        {name: 'Bar', value: 1},
+        {name: 'Baz', value: 2},
+    ];
+    const sorted = sortBy(dataset, (item) => item.value);
+    expect(sorted.map((x) => x.name).join(',')).toBe('Bar,Baz,Foo');
+});

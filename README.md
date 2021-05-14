@@ -8,6 +8,19 @@ console.assert(cmp([1, 'b', null], [1, 'a']) === 1);
 console.assert(cmp([1, {reverse: 'b'}, null], [1, {reverse: 'a'}]) === -1);
 ```
 
+### Sorting convenience functions
+
+```javascript
+const { sortBy } = require('better-cmp/lib/extra');
+const dataset = [
+    {name: 'Foo', value: 3},
+    {name: 'Bar', value: 1},
+    {name: 'Baz', value: 2},
+];
+const sorted = sortBy(dataset, (item) => item.value);
+console.assert(sorted.map((x) => x.name).join(',') === 'Bar,Baz,Foo');
+```
+
 ### Rationale
 
 - Very often, when sorting arrays in JavaScript, you need a comparison function.
@@ -29,7 +42,10 @@ It is useful to have a stricter version of comparison.
 
 - Arrays are compared lexicographically, comparing the elements recursively.
 
-- If both values are objects that have a `reverse` key, are sorted in reverse order, using the value by that key.
+- If both values are objects that have a `reverse` key, they are sorted in reverse order, using the value by that key.
+
+- If both values are objects that have a `localeCompare` key, they are sorted using [Intl.Collator][1].  
+You can specify a custom collator using `collator` key.
 
 - Anything else throws `TypeError`.
 
@@ -38,17 +54,9 @@ There are a few arbitrary decisions made here.
 The other consistent solution would be to throw on `NaN`.
 `null` is treated as `None` value, and the type of other variable is ignored.
 
-### Breaking changes
-
-From version 1.1.0 to 2.0.0, export method was changed to make it more user-friendly for TypeScript.
-
-Until 1.1.0: `var cmp = require('better-cmp');`
-
-Since 2.0.0: `var cmp = require('better-cmp').cmp;` ...or `const { cmp } = require('better-cmp');`
-
 ### Tests
 
-Tests are located in `lib/test.ts`.
+Tests are located in `lib/index.test.ts`.
 
 ### License
 
@@ -57,3 +65,5 @@ MIT
 ### Author
 
 Igor null <m1el.2027@gmail.com>
+
+[1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator "Intl.Collator"

@@ -145,3 +145,8 @@ test('localeCompare and reverse sorting compose', () => {
         {reverse: {localeCompare: 'RESERVE', collator: accentCollator}}
     )).toBe(-1);
 });
+
+test('example from documentation works', () => {
+    expect(cmp([1, 'b', null], [1, 'a'])).toBe(1);
+    expect(cmp([1, {reverse: 'b'}, null], [1, {reverse: 'a'}])).toBe(-1);
+});
