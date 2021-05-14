@@ -1,11 +1,12 @@
 {
   "name": "better-cmp",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "Compare things. Adequately.",
   "main": "./lib/index.js",
   "scripts": {
     "build": "tsc",
-    "test": "tsc && node lib/test.js --run"
+    "lint": "eslint src",
+    "test": "tsc && jest --verbose lib"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.24.0",
+    "jest": "^26.6.3",
     "typescript": "^3.2.4"
   },
   "dependencies": {}

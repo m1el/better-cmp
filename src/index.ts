@@ -1,7 +1,13 @@
-export type Ord = null | boolean | number | string | OrdArray | OrdReverse;
+export type Ord = null | boolean | number | string | OrdArray | OrdReverse | LocaleCmp;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface OrdArray extends Array<Ord> { }
 export interface OrdReverse {
     reverse: Ord;
+}
+
+export interface LocaleCmp {
+    localeCompare: string;
+    collator?: Intl.Collator;
 }
 
 export type Ordering = -1 | 0 | 1;
@@ -18,6 +24,13 @@ const isArray: (ary: unknown) => ary is Array<unknown> = Array.isArray ||
     ((ary): ary is Array<unknown> => toString(ary) === '[object Array]');
 
 const isReverse = (x: Ord): x is OrdReverse => x && has(x, 'reverse');
+const isLocaleCmp = (x: Ord): x is LocaleCmp => x && has(x, 'localeCompare');
+
+// Do not invoke Intl.Collator constructor immediately in case the browser
+// doesn't support this.
+let defaultCollator: Intl.Collator | undefined;
+const getCollator = (): Intl.Collator =>
+    defaultCollator = defaultCollator ?? new Intl.Collator();
 
 /*
  * Compare two values.
@@ -44,6 +57,14 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
         a = tmp;
     }
 
+    // handle localeCompare
+    if (isLocaleCmp(a) && isLocaleCmp(b)) {
+        const collator = a.collator ?? getCollator();
+        // cmp(x, 0) is necessary because "some browsers may return -2 or 2,
+        // or even some other negative or positive value."
+        return cmp(collator.compare(a.localeCompare, b.localeCompare), 0);
+    }
+
     const nulla = a === null;
     const nullb = b === null;
     if (nulla || nullb) {
@@ -68,7 +89,6 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
             // passthrough
             // }
         } else if (typea === 'string' || typea === 'boolean' || typea === 'bigint') {
-            // tslint:disable-next-line:no-empty
             // passthrough
         } else if (isArray(a) && isArray(b)) {
             const len = Math.min(a.length, b.length);
