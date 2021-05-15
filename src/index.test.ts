@@ -92,6 +92,10 @@ test('arrays are ordered lexicographically', () => {
     expect(cmp([1, 1, 1], [1, 2, 1])).toBe(-1);
 });
 
+test('nested arrays are processed correctly', () => {
+    expect(cmp([1, [1, 1]], [1, [1, 2]])).toBe(-1);
+});
+
 test('reverse sorting works as expected', () => {
     expect(cmp({reverse: 'a'}, {reverse: 'a'})).toBe(0);
     expect(cmp({reverse: 'a'}, {reverse: 'b'})).toBe(1);
@@ -100,6 +104,12 @@ test('reverse sorting works as expected', () => {
     expect(cmp({reverse: [1]}, {reverse: [1]})).toBe(0);
     expect(cmp({reverse: [1, 1]}, {reverse: [1, 2]})).toBe(1);
     expect(cmp({reverse: null}, {reverse: 1})).toBe(1);
+});
+
+test('nested reverse is handled properly', () => {
+    expect(
+        cmp({reverse: {reverse: 'a'}}, {reverse: {reverse: 'b'}})
+    ).toBe(-1);
 });
 
 test('localeCompare works with default collator', () => {

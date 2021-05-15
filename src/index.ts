@@ -1,4 +1,6 @@
-export type Ord = null | boolean | number | string | OrdArray | OrdReverse | LocaleCmp;
+export type Ord =
+    | null | boolean | number | string
+    | OrdArray | OrdReverse | LocaleCmp;
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface OrdArray extends Array<Ord> { }
 export interface OrdReverse {
@@ -30,7 +32,9 @@ const isLocaleCmp = (x: Ord): x is LocaleCmp => x && has(x, 'localeCompare');
 // doesn't support this.
 let defaultCollator: Intl.Collator | undefined;
 const getCollator = (): Intl.Collator =>
-    defaultCollator = defaultCollator ?? new Intl.Collator();
+    defaultCollator = defaultCollator || new Intl.Collator();
+
+const scalarType = /^(?:number|string|boolean|bigint)$/;
 
 /*
  * Compare two values.
@@ -52,14 +56,12 @@ const getCollator = (): Intl.Collator =>
 export const cmp = (a: Ord, b: Ord): Ordering => {
     // handle reverse sorting
     if (isReverse(a) && isReverse(b)) {
-        const tmp = b.reverse;
-        b = a.reverse;
-        a = tmp;
+        return cmp(b.reverse, a.reverse);
     }
 
     // handle localeCompare
     if (isLocaleCmp(a) && isLocaleCmp(b)) {
-        const collator = a.collator ?? getCollator();
+        const collator = a.collator || getCollator();
         // cmp(x, 0) is necessary because "some browsers may return -2 or 2,
         // or even some other negative or positive value."
         return cmp(collator.compare(a.localeCompare, b.localeCompare), 0);
@@ -75,21 +77,20 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
         const typea = typeof a;
         const typeb = typeof b;
         if (typea !== typeb) {
-            throw new TypeError(`different types are not orderable: ${typea} <> ${typeb}`);
+            throw new TypeError(
+                `different types are not orderable: ${typea} <> ${typeb}`);
         }
 
-        if (typea === 'number') {
-            const nana = isNaN(a as number);
-            const nanb = isNaN(b as number);
+        if (scalarType.test(typea)) {
+            // NaNs are joined here with all scalars because there is
+            // no functional difference, but separating a `number` type
+            // take longer to express.
+            const nana = a !== a;
+            const nanb = b !== b;
             if (nana || nanb) {
                 a = nanb;
                 b = nana;
             }
-            // else {
-            // passthrough
-            // }
-        } else if (typea === 'string' || typea === 'boolean' || typea === 'bigint') {
-            // passthrough
         } else if (isArray(a) && isArray(b)) {
             const len = Math.min(a.length, b.length);
             for (let i = 0; i < len; i++) {
