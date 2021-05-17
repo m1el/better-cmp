@@ -19,12 +19,6 @@ const has: <P extends PropertyKey>(object: unknown, property: P) =>
     object is { [K in P]: unknown } =
     Function.prototype.call.bind(Object.prototype.hasOwnProperty);
 
-const toString: (object: unknown) => string =
-    Function.prototype.call.bind(Object.prototype.toString);
-
-const isArray: (ary: unknown) => ary is Array<unknown> = Array.isArray ||
-    ((ary): ary is Array<unknown> => toString(ary) === '[object Array]');
-
 const isReverse = (x: Ord): x is OrdReverse => x && has(x, 'reverse');
 const isLocaleCmp = (x: Ord): x is LocaleCmp => x && has(x, 'localeCompare');
 
@@ -91,7 +85,7 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
                 a = nanb;
                 b = nana;
             }
-        } else if (isArray(a) && isArray(b)) {
+        } else if (Array.isArray(a) && Array.isArray(b)) {
             const len = Math.min(a.length, b.length);
             for (let i = 0; i < len; i++) {
                 const c = cmp(a[i], b[i]);
