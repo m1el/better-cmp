@@ -1,6 +1,6 @@
 {
   "name": "better-cmp",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Compare things. Adequately.",
   "main": "./lib/index.js",
   "scripts": {
