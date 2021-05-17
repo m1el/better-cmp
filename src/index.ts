@@ -28,8 +28,6 @@ let defaultCollator: Intl.Collator | undefined;
 const getCollator = (): Intl.Collator =>
     defaultCollator = defaultCollator || new Intl.Collator();
 
-const scalarType = /^(?:number|string|boolean|bigint)$/;
-
 /*
  * Compare two values.
  *   -1 if a < b
@@ -68,23 +66,21 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
         a = nullb;
         b = nulla;
     } else {
-        const typea = typeof a;
-        const typeb = typeof b;
-        if (typea !== typeb) {
+        const ta = typeof a;
+        const tb = typeof b;
+        if (ta !== tb) {
             throw new TypeError(
-                `different types are not orderable: ${typea} <> ${typeb}`);
+                `different types are not orderable: ${ta} <> ${tb}`);
         }
-
-        if (scalarType.test(typea)) {
-            // NaNs are joined here with all scalars because there is
-            // no functional difference, but separating a `number` type
-            // take longer to express.
+        if (ta === 'number') {
             const nana = a !== a;
             const nanb = b !== b;
             if (nana || nanb) {
                 a = nanb;
                 b = nana;
             }
+        } else if (ta === 'string' || ta === 'boolean' || ta === 'bigint') {
+            // passthrough
         } else if (Array.isArray(a) && Array.isArray(b)) {
             const len = Math.min(a.length, b.length);
             for (let i = 0; i < len; i++) {
