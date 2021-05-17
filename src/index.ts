@@ -46,23 +46,11 @@ const getCollator = (): Intl.Collator =>
  *   cmp(null, 0) === -1
  */
 export const cmp = (a: Ord, b: Ord): Ordering => {
-    // handle reverse sorting
-    if (isReverse(a) && isReverse(b)) {
-        return cmp(b.reverse, a.reverse);
-    }
-
-    // handle localeCompare
-    if (isLocaleCmp(a) && isLocaleCmp(b)) {
-        const collator = a.collator || getCollator();
-        // cmp(x, 0) is necessary because "some browsers may return -2 or 2,
-        // or even some other negative or positive value."
-        return cmp(collator.compare(a.localeCompare, b.localeCompare), 0);
-    }
-
     const nulla = a === null;
     const nullb = b === null;
     if (nulla || nullb) {
-        // a strict version would throw here.
+        // The type of other value is ignored, a stricter version
+        // of this function would check the type before returning.
         a = nullb;
         b = nulla;
     } else {
@@ -72,6 +60,7 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
             throw new TypeError(
                 `different types are not orderable: ${ta} <> ${tb}`);
         }
+
         if (ta === 'number') {
             const nana = a !== a;
             const nanb = b !== b;
@@ -81,6 +70,9 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
             }
         } else if (ta === 'string' || ta === 'boolean' || ta === 'bigint') {
             // passthrough
+        } else if (isReverse(a) && isReverse(b)) {
+            // handle reverse sorting
+            return cmp(b.reverse, a.reverse);
         } else if (Array.isArray(a) && Array.isArray(b)) {
             const len = Math.min(a.length, b.length);
             for (let i = 0; i < len; i++) {
@@ -89,8 +81,15 @@ export const cmp = (a: Ord, b: Ord): Ordering => {
             }
             a = a.length;
             b = b.length;
+        } else if (isLocaleCmp(a) && isLocaleCmp(b)) {
+            // handle localeCompare
+            const collator = a.collator || getCollator();
+            // cmp(x, 0) is necessary because "some browsers may return -2 or 2,
+            // or even some other negative or positive value."
+            return cmp(collator.compare(a.localeCompare, b.localeCompare), 0);
         } else {
-            throw new TypeError('only scalars and arrays are orderable');
+            throw new TypeError('only scalars, arrays, ' +
+                'reverse and localeCompare are orderable');
         }
     }
 
