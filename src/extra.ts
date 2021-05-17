@@ -24,7 +24,7 @@ export const sortByLazy = <T>(ary: Array<T>, ...fns: Array<OrdFn<T>>): Array<T> 
 
 export const lt = (a: Ord, b: Ord): boolean => cmp(a, b) === -1;
 export const eq = (a: Ord, b: Ord): boolean => cmp(a, b) === 0;
-export const gt = (a: Ord, b: Ord): boolean => cmp(a, b) === 1;
 export const lte = (a: Ord, b: Ord): boolean => cmp(a, b) !== 1;
+export const gt = (a: Ord, b: Ord): boolean => cmp(a, b) === 1;
 export const neq = (a: Ord, b: Ord): boolean => cmp(a, b) !== 0;
 export const gte = (a: Ord, b: Ord): boolean => cmp(a, b) !== -1;

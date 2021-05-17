@@ -78,12 +78,14 @@ test('lt, eq, gt, gte, neq, lte work as expected', () => {
     type CmpPredicate = (a: Ord, b: Ord) => boolean;
     const matrix: Array<[CmpPredicate, boolean, boolean, boolean]> = [
         // fn  a<b   a=b    a>b
-        [eq,  false, true,  false],
-        [neq, true,  false, true ],
-        [gt,  false, false, true ],
-        [lte, true,  true,  false],
+        // [never, f, f, f],
         [lt,  true,  false, false],
+        [eq,  false, true,  false],
+        [lte, true,  true,  false],
+        [gt,  false, false, true ],
+        [neq, true,  false, true ],
         [gte, false, true,  true ],
+        // [always, t, t, t],
     ];
 
     for (const [fn, ltVal, eqVal, gtVal] of matrix) {
