@@ -1,6 +1,6 @@
 {
   "name": "better-cmp",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Compare things. Adequately.",
   "main": "./lib/index.js",
   "scripts": {
@@ -30,11 +30,12 @@
   },
   "homepage": "https://github.com/m1el/better-cmp#README.md",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
-    "eslint": "^7.24.0",
+    "@types/node": "^15.14.9",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "eslint": "^7.32.0",
     "jest": "^26.6.3",
-    "typescript": "^3.2.4"
+    "typescript": "^3.9.10"
   },
   "dependencies": {}
 }
